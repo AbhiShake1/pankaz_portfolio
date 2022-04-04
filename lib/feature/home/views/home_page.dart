@@ -86,12 +86,20 @@ class SocialWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _launchUrl(String url) async {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        context.showToast(msg: 'Something went wrong');
+      }
+    }
+
     return Row(
       children: [
         IconButton(
           onPressed: () async {
             const facebookUrl = 'https://www.facebook.com/Pankazphotography';
-            await launch(facebookUrl);
+            await _launchUrl(facebookUrl);
           },
           icon: const Icon(
             FontAwesomeIcons.facebook,
@@ -101,7 +109,7 @@ class SocialWidget extends StatelessWidget {
         IconButton(
           onPressed: () async {
             const instaUrl = '';
-            await launch(instaUrl);
+            await _launchUrl(instaUrl);
           },
           icon: const Icon(
             FontAwesomeIcons.instagram,
@@ -112,7 +120,7 @@ class SocialWidget extends StatelessWidget {
           onPressed: () async {
             const youtubeUrl =
                 'https://www.youtube.com/channel/UCbAZjC6gDZA-bKocsjDoT5w';
-            await launch(youtubeUrl);
+            await _launchUrl(youtubeUrl);
           },
           icon: const Icon(
             FontAwesomeIcons.youtube,
