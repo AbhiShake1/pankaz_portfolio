@@ -4,35 +4,44 @@ import 'package:velocity_x/velocity_x.dart';
 
 class AnimatedRichText extends HookWidget {
   const AnimatedRichText(
-      {Key? key, required this.text, this.textColor = Colors.black, this.lineColor})
+      {Key? key,
+      required this.text,
+      this.textColor = Colors.black,
+      this.lineColor,
+      this.animate = true,
+      this.animationDuration = const Duration(seconds: 2)})
       : super(key: key);
 
   final String text;
   final Color? lineColor;
   final Color textColor;
+  final bool animate;
+  final Duration animationDuration;
 
   @override
   Widget build(BuildContext context) {
     final lineController = useAnimationController(
       lowerBound: 20,
       upperBound: 30,
-      duration: const Duration(seconds: 2),
+      duration: animationDuration,
     );
 
     useEffect(() {
-      lineController
-        ..forward()
-        ..addListener(() {
-          if (lineController.isCompleted) {
-            lineController.repeat(reverse: true);
-          }
-        });
+      if (animate) {
+        lineController
+          ..forward()
+          ..addListener(() {
+            if (lineController.isCompleted) {
+              lineController.repeat(reverse: true);
+            }
+          });
+      }
       return null;
     });
 
     return Column(
       children: [
-        text.text.scale(2).color(textColor).bold.make(),
+        text.text.xl2.color(textColor).bold.make(),
         AnimatedBuilder(
           animation: lineController,
           builder: (_, __) => Container(
